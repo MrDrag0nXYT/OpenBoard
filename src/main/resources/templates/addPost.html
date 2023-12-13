@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Создать пост</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
+    />
+
+    <link
+      rel="stylesheet"
+      href="../static/css/bootstrap.min.css"
+      th:href="@{/css/bootstrap.min.css}"
+    />
+  </head>
+
+  <body data-bs-theme="dark">
+    <form
+      th:action="@{/addpost}"
+      class="container rounded-3 p-3 mt-5 bg-body-tertiary"
+      method="post"
+    >
+      <div class="text-center mb-3">
+        <label for="headerInput" class="form-label">Заголовок поста</label>
+        <input
+          type="text"
+          class="form-control"
+          name="title"
+          id="headerInput"
+          aria-describedby="helpId"
+          placeholder="Введите заголовок..."
+        />
+      </div>
+
+      <div class="text-center mb-3">
+        <label for="contentInput" class="form-label">Текст поста</label>
+        <textarea
+          class="form-control"
+          name="content"
+          id="contentInput"
+          placeholder="Введите текст поста..."
+          rows="2"
+        ></textarea>
+      </div>
+
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary">
+          <span class="fas fa-add"></span>
+          Добавить
+        </button>
+      </div>
+    </form>
+
+    <!-- Скрипт -->
+    <script
+      src="../static/js/bootstrap.bundle.min.js"
+      th:src="@{/js/bootstrap.bundle.min.js}"
+    ></script>
+  </body>
+</html>
