@@ -40,10 +40,11 @@ public class Post {
 
     public String getPublishedAtFormatted() {
         LocalDateTime now = LocalDateTime.now();
+        LocalDateTime postTime = publishedAt;
 
-        long secondsDiff = ChronoUnit.SECONDS.between(publishedAt, now);
-        long minutesDiff = ChronoUnit.MINUTES.between(publishedAt, now);
-        long hoursDiff = ChronoUnit.HOURS.between(publishedAt, now);
+        long secondsDiff = ChronoUnit.SECONDS.between(postTime, now);
+        long minutesDiff = ChronoUnit.MINUTES.between(postTime, now);
+        long hoursDiff = ChronoUnit.HOURS.between(postTime, now);
 
         String formattedTime;
         if (secondsDiff < 5) {
@@ -55,7 +56,7 @@ public class Post {
         } else if (hoursDiff < 24) {
             formattedTime = String.format("%d часов назад", hoursDiff);
         } else {
-            formattedTime = publishedAt.format(DateTimeFormatter.ofPattern("HH:mm, dd MMMM, yyyy"));
+            formattedTime = postTime.format(DateTimeFormatter.ofPattern("HH:mm, dd MMMM, yyyy"));
         }
 
         return formattedTime;

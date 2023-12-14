@@ -64,10 +64,8 @@ public class PostsController {
         return "redirect:/feed";
     }
 
-//    TODO: сделать нормальный вид для просмотра поста
-    @ResponseBody
     @GetMapping("/post/{id}")
-    public Post findPost(@PathVariable Long id){
-        return postService.findPostById(id);
+    public String findPost(@PathVariable Long id){
+        return "redirect:/deletepost/" + id;
     }
 }
