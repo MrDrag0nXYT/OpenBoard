@@ -1,5 +1,6 @@
 package zxc.solevoy.openboard.controller;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,8 +17,8 @@ public class PostsController {
     private final PostService postService;
 
     @GetMapping
-    public String showMainPage(Model model) {
-        return "feed";
+    public String showMainPage() {
+        return "redirect:/feed";
     }
 
     @GetMapping("/feed")
@@ -41,9 +42,29 @@ public class PostsController {
     public String addPost(Post post, Model model) {
         postService.createPost(post);
 
-        return "redirect:/createpost";
+        return "redirect:/feed";
     }
 
+    @GetMapping("/deletepost/{id}")
+    public String deletePostForm(@PathVariable Long id, Model model){
+        model.addAttribute("post", postService.findPostById(id));
+
+        return "deletePost";
+    }
+
+    @GetMapping("/deletepost")
+    public String emptyDeleteForm(){
+        return "redirect:/feed";
+    }
+
+    @Transactional
+    @PostMapping("/removepost/{id}")
+    public String removePost(@PathVariable Long id){
+        postService.deletePost(id);
+        return "redirect:/feed";
+    }
+
+//    TODO: сделать нормальный вид для просмотра поста
     @ResponseBody
     @GetMapping("/post/{id}")
     public Post findPost(@PathVariable Long id){

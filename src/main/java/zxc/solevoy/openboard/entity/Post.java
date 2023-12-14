@@ -4,9 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 @Entity
 @Table(name = "posts")
@@ -16,7 +16,7 @@ public class Post {
 
     @Id
     @Column(name = "id", unique = true)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "title")
@@ -39,17 +39,26 @@ public class Post {
 
 
     public String getPublishedAtFormatted() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime postTime = publishedAt;
 
-        if (Duration.between(publishedAt, LocalDateTime.now()).getSeconds() < 60) {
-            return DateTimeFormatter.ofPattern("ss").format(publishedAt) + " секунд назад";
-        } else if (Duration.between(publishedAt, LocalDateTime.now()).getSeconds() >= 60
-                && Duration.between(publishedAt, LocalDateTime.now()).getSeconds() < 3599) {
-            return DateTimeFormatter.ofPattern("mm").format(publishedAt) + " минут назад";
-        } else if (Duration.between(publishedAt, LocalDateTime.now()).getSeconds() >= 3599
-                && Duration.between(publishedAt, LocalDateTime.now()).getSeconds() < 86459){
-            return DateTimeFormatter.ofPattern("HH").format(publishedAt) + " часов назад";
+        long secondsDiff = ChronoUnit.SECONDS.between(postTime, now);
+        long minutesDiff = ChronoUnit.MINUTES.between(postTime, now);
+        long hoursDiff = ChronoUnit.HOURS.between(postTime, now);
+
+        String formattedTime;
+        if (secondsDiff < 5) {
+            formattedTime = "только что";
+        } else if (secondsDiff < 60) {
+            formattedTime = String.format("%d секунд назад", secondsDiff);
+        } else if (minutesDiff < 60) {
+            formattedTime = String.format("%d минут назад", minutesDiff);
+        } else if (hoursDiff < 24) {
+            formattedTime = String.format("%d часов назад", hoursDiff);
+        } else {
+            formattedTime = postTime.format(DateTimeFormatter.ofPattern("HH:mm, dd MMMM, yyyy"));
         }
 
-        return DateTimeFormatter.ofPattern("HH:mm, dd MMMM, yyyy").format(publishedAt);
+        return formattedTime;
     }
 }
