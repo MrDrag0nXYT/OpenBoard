@@ -29,10 +29,19 @@
         class="container rounded-3 text-start bg-body-tertiary p-4 mb-3"
         th:each="post : ${posts}"
       >
-        <h5 class="mb-3 text-center" th:text="${post.getTitle}">
-          Заголовок поста
-        </h5>
+        <a
+          class="link-body-emphasis link-underline-opacity-0 link-underline-opacity-0-hover"
+          th:href="@{'/post/' + ${post.getId()}}"
+        >
+          <h5 class="mb-3 text-center" th:text="${post.getTitle}">
+            Заголовок поста
+          </h5>
+        </a>
         <p class="mb-0" th:text="${post.getContent}">Текст поста</p>
+        <hr />
+        <p
+        class="text-muted"
+        th:text="@{'Опубликовано: ' + ${post.getPublishedAtFormatted()}}">{ВРЕМЯ}</p>
       </div>
     </div>
 
